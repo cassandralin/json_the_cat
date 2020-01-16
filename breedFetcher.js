@@ -6,10 +6,13 @@ const request = require('request'); // installed request library, requesting to 
 
 
 const fetchBreedDescription = function(breedName, callback) {
-  request('https://api.thecatapi.com/v1/breeds/search?q='+ breedName, (error, response, body) => {
+  request('https://api.thecatapi.com/v1/breeds/search?q=' + breedName, (error, response, body) => {
     const data = JSON.parse(body);
-    if (data.length === 0 || error && error.details) {
-      callback(error, null);
+    if (data && data.length === 0 || error && error.details) {
+      callback('Breed not found', null);
+    }
+    if (error && error.details) {
+      callback(error.details, null);
     }
     if (body) {
       const data = JSON.parse(body);
